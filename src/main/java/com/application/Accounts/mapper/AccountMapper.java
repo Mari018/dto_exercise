@@ -4,11 +4,12 @@ import com.application.Accounts.dto.AccountDTO;
 import com.application.Accounts.dto.UpdateAccountDTO;
 import com.application.Accounts.entity.Account;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AccountMapper {
 
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
@@ -16,8 +17,6 @@ public interface AccountMapper {
     Account accountDTOToAccount (AccountDTO accountDTO);
 
     AccountDTO accountToAccountDTO (Account account);
-
-    List<Account> listAccountDTOToListAccount (List<AccountDTO> accountDTOS);
 
     List<AccountDTO> listAccountToListAccountDTO (List<Account> accounts);
 

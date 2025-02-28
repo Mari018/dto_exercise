@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.List;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -36,4 +37,5 @@ public class Account {
 
     @OneToMany(mappedBy = "account")
     private List<Vehicle> vehicles;
+
 }

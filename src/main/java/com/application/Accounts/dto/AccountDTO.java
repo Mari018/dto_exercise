@@ -1,7 +1,6 @@
 package com.application.Accounts.dto;
 
 import com.application.Accounts.entity.Vehicle;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -22,6 +21,7 @@ public class AccountDTO {
     @Pattern(regexp = "^[0-9]+$\n")
     private int age;
     @Email(message = "you must fill the email")
+    @NotBlank(message = "you need to have a email")
     private String email;
     @NotBlank(message = "you need a address")
     private String address;

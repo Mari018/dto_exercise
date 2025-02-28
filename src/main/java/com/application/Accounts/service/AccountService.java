@@ -18,21 +18,21 @@ import java.util.Optional;
 @Service
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
 
-
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
+        this.accountMapper = accountMapper;
     }
 
     public AccountDTO createAccount(AccountDTO accountDTO) {
-        Account account = AccountMapper.INSTANCE.accountDTOToAccount(accountDTO);
+        Account account = accountMapper.accountDTOToAccount(accountDTO);
 
         if (accountRepository.findByEmail(accountDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("email already exists");
         }
 
-        accountRepository.save(account);
-        return AccountMapper.INSTANCE.accountToAccountDTO(account);
+        return accountMapper.accountToAccountDTO(accountRepository.save(account));
     }
 
     public AccountDTO activateAccount(Long id) {

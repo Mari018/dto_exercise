@@ -1,7 +1,6 @@
 package com.application.Accounts.controller;
 
 import com.application.Accounts.dto.VehicleDTO;
-import com.application.Accounts.entity.Vehicle;
 import com.application.Accounts.exception.UserNotFoundException;
 import com.application.Accounts.exception.VehicleNotfoundException;
 import com.application.Accounts.service.VehicleService;
