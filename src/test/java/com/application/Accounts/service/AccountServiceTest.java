@@ -2,8 +2,7 @@ package com.application.Accounts.service;
 
 import com.application.Accounts.dto.AccountDTO;
 import com.application.Accounts.entity.Account;
-import com.application.Accounts.mapper.AccountMapper;
-import com.application.Accounts.mapper.AccountMapperImpl;
+import com.application.Accounts.exception.EmailAlreadyExistsException;
 import com.application.Accounts.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,10 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.TestConfiguration;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -33,8 +29,6 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService accountService;
 
-    @Mock
-    private AccountMapper accountMapper;
 
     @BeforeEach
     void before() {
@@ -52,24 +46,16 @@ class AccountServiceTest {
         account.setEmail("test@example.com");
         account.setAddress("address");
         account.setVehicles(new ArrayList<>());
-        account.setId(1L);
-        account.setActive(true);
 
         Optional<Account> optional = Optional.empty();
 
-        when(accountRepository.findByEmail(accountDTO.getEmail())).thenReturn(optional);
-        when(accountMapper.accountDTOToAccount(any(AccountDTO.class))).thenReturn(account);
+        Mockito.lenient().when(accountRepository.findByEmail(accountDTO.getEmail())).thenReturn(optional);
         Mockito.lenient().when(accountRepository.save(any(Account.class))).thenReturn(account);
-        when(accountMapper.accountToAccountDTO(any(Account.class))).thenReturn(accountDTO);
 
         accountService.createAccount(accountDTO);
 
         verify(accountRepository, times(1)).findByEmail(accountDTO.getEmail());
-        verify(accountMapper, times(1)).accountDTOToAccount(any(AccountDTO.class));
         verify(accountRepository, times(1)).save(any(Account.class));
-        verify(accountMapper, times(1)).accountToAccountDTO(any(Account.class));
-
-
 
         assertNotNull(accountDTO);
         assertEquals(accountDTO.getFirstName(), account.getFirstName());
@@ -78,8 +64,54 @@ class AccountServiceTest {
         assertEquals(accountDTO.getEmail(), account.getEmail());
         assertEquals(accountDTO.getAddress(), account.getAddress());
         assertEquals(accountDTO.getVehicles(), account.getVehicles());
+    }
+
+    @Test
+    void when_CreateAccount_then_ReturnError() {
+        AccountDTO accountDTO = new AccountDTO("Mario", "oliveira", 21, "test@example.com", "address", new ArrayList<>());
+
+        Account account = new Account();
+        account.setFirstName("Mario");
+        account.setLastName("oliveira");
+        account.setAge(21);
+        account.setEmail("test@example.com");
+        account.setAddress("address");
+        account.setVehicles(new ArrayList<>());
+
+        Optional<Account> optional = Optional.of(account);
+
+        when(accountRepository.findByEmail(accountDTO.getEmail())).thenReturn(optional);
+
+        assertThrows(EmailAlreadyExistsException.class, () -> accountService.createAccount(accountDTO));
+
+        verify(accountRepository, times(1)).findByEmail(accountDTO.getEmail());
+        verify(accountRepository, times(0)).save(any(Account.class));
+
+        assertEquals(accountDTO.getEmail(), account.getEmail());
 
 
     }
 
+    @Test
+    void when_activateAccount_return(){
+
+        Account account = new Account();
+        account.setFirstName("Mario");
+        account.setLastName("oliveira");
+        account.setAge(21);
+        account.setEmail("test@example.com");
+        account.setAddress("address");
+        account.setVehicles(new ArrayList<>());
+
+        Optional<Account> optional = Optional.of(account);
+
+        when(accountRepository.findById(any(Long.class))).thenReturn(optional);
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
+
+        accountService.activateAccount(any(Long.class));
+
+        verify(accountRepository,times(1)).findById(any(Long.class));
+        verify(accountRepository,times(1)).save(any(Account.class));
+
+    }
 }

@@ -86,7 +86,7 @@ public class AccountController {
 
     }
 
-    @PatchMapping(path = "/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity<?> updateAccount (@PathVariable Long id, @RequestBody AccountDTO accountDTO, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

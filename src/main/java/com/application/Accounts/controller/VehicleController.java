@@ -59,7 +59,7 @@ public class VehicleController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping(path = "/active/account/deactivated")
     public ResponseEntity<?> getDeactivatedAccountsWithActiveVehicles(){
         try {
             return ResponseEntity.ok(vehicleService.getDeactivatedAccountsWithActiveVehicles());
@@ -68,7 +68,7 @@ public class VehicleController {
         }
     }
 
-    @GetMapping()
+    @GetMapping(path = "/active/plate/account/deactivated")
     public ResponseEntity<?> getPlateFromDeactivatedAccounts(){
         try {
             return ResponseEntity.ok(vehicleService.getPlateFromDeactivatedAccounts());

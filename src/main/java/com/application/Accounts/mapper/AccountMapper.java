@@ -4,7 +4,6 @@ import com.application.Accounts.dto.AccountDTO;
 import com.application.Accounts.dto.UpdateAccountDTO;
 import com.application.Accounts.entity.Account;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

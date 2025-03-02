@@ -17,8 +17,7 @@ public class AccountDTO {
     private String firstName;
     @NotBlank(message = "you must have a last name")
     private String lastName;
-    @NotBlank(message = "you must put you age")
-    @Pattern(regexp = "^[0-9]+$\n")
+
     private int age;
     @Email(message = "you must fill the email")
     @NotBlank(message = "you need to have a email")

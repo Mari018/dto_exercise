@@ -3,36 +3,32 @@ package com.application.Accounts.service;
 import com.application.Accounts.dto.AccountDTO;
 import com.application.Accounts.dto.UpdateAccountDTO;
 import com.application.Accounts.entity.Account;
-import com.application.Accounts.entity.Vehicle;
 import com.application.Accounts.exception.EmailAlreadyExistsException;
 import com.application.Accounts.exception.UserNotFoundException;
 import com.application.Accounts.mapper.AccountMapper;
 import com.application.Accounts.repository.AccountRepository;
-import com.application.Accounts.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class AccountService {
+public class AccountService  {
     private final AccountRepository accountRepository;
-    private final AccountMapper accountMapper;
 
-    public AccountService(AccountRepository accountRepository, AccountMapper accountMapper) {
+
+    public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-        this.accountMapper = accountMapper;
     }
 
     public AccountDTO createAccount(AccountDTO accountDTO) {
-        Account account = accountMapper.accountDTOToAccount(accountDTO);
+        Account account = AccountMapper.INSTANCE.accountDTOToAccount(accountDTO);
 
         if (accountRepository.findByEmail(accountDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("email already exists");
         }
 
-        return accountMapper.accountToAccountDTO(accountRepository.save(account));
+        return AccountMapper.INSTANCE.accountToAccountDTO(accountRepository.save(account));
     }
 
     public AccountDTO activateAccount(Long id) {

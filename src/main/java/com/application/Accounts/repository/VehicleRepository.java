@@ -13,5 +13,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     Vehicle findByPlate (String plate);
     List<Vehicle> findByAccountIn (List<Account> accounts);
-    Vehicle findByAccount_id (Long id);
+
 }
