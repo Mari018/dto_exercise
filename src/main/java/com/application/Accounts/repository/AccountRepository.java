@@ -1,7 +1,6 @@
 package com.application.Accounts.repository;
 
 import com.application.Accounts.entity.Account;
-import com.application.Accounts.entity.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
